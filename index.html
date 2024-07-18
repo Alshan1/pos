@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <div class="form-box">
+                <i class="bi bi-cart4 big-icon"></i> 
+                <h2>Add Product and Customer</h2>
+                <input type="text" id="productName" placeholder="Product Name">
+                <input type="number" id="productPrice" placeholder="Product Price">
+                <button onclick="addProduct()">Add Product</button>
+                <input type="text" id="customerName" placeholder="Customer Name">
+                <button onclick="addCustomer()">Add Customer</button>
+            </div>
+        </div>
+        
+        <div id="productTableWrapper" class="product-table-wrapper" style="display: none;">
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="customerSection" class="customer-section" style="display: none;">
+            <div class="dropdown">
+                <button onclick="toggleCustomerDropdown()" class="dropbtn">Customer Select</button>
+                <div id="customerDropdown" class="dropdown-content">
+                    <select id="customerList" onchange="selectCustomer()"></select>
+                </div>
+            </div>
+        </div>
+        
+        <div id="summarySection" class="summary-section" style="display: none;">
+            <table id="summaryTable">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="totalAmount">TOTAL AMOUNT OF PURCHASE : ₹0/-</div>
+            <button onclick="completePurchase()">Complete</button>
+        </div>
+    </div>
+
+   
+<div id="invoiceSection" class="invoice-section" style="display: none;">
+    <i class="bi bi-bag-check-fill"></i>
+    <h2>ShanSooq</h2>
+    <div id="invoiceCustomer"></div>
+    <table id="invoiceTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="invoiceTotalAmount"></div>
+    <button onclick="printInvoice()">Print Invoice</button>
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
