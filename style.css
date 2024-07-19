@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: url('https://images.pexels.com/photos/331684/pexels-photo-331684.jpeg?cs=srgb&dl=pexels-madebymath-331684.jpg&fm=jpg');
+    background: url('https://images.pexels.com/photos/331684/pexels-photo-331684.jpeg?cs=srgb&dl=pexels-madebymath-331684.jpg&fm=jpg') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -119,12 +119,52 @@ button:hover {
     outline: none;
     width: 50px;
 }
+
 @media print {
     body > *:not(.invoice-section) {
         display: none !important;
     }
 }
 
-i{
+i {
     font-size: 2rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    input, button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
+
+    input, button {
+        padding: 8px;
+    }
+
+    th, td {
+        padding: 4px;
+    }
+
+    i {
+        font-size: 1.5rem;
+    }
 }

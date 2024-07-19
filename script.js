@@ -27,10 +27,18 @@ function updateProductTable() {
         row.innerHTML = `
             <td>${product.name}</td>
             <td>${product.price}</td>
-            <td><button onclick="orderProduct(${index})">Order</button></td>
+            <td>
+                <button onclick="orderProduct(${index})">Order</button>
+                <button onclick="deleteProduct(${index})">Delete</button>
+            </td>
         `;
         tableBody.appendChild(row);
     });
+
+    // Hide the product table wrapper if there are no products
+    if (products.length === 0) {
+        document.getElementById('productTableWrapper').style.display = 'none';
+    }
 }
 
 function orderProduct(index) {
@@ -44,6 +52,11 @@ function orderProduct(index) {
     }
 
     updateSummaryTable();
+}
+
+function deleteProduct(index) {
+    products.splice(index, 1);
+    updateProductTable();
 }
 
 function addCustomer() {
@@ -168,36 +181,9 @@ function completePurchase() {
 
 function printInvoice() {
     const invoiceSection = document.getElementById('invoiceSection');
-    const invoiceCustomer = document.getElementById('invoiceCustomer');
-    const invoiceTable = document.getElementById('invoiceTable');
-    const invoiceTotalAmount = document.getElementById('invoiceTotalAmount');
 
     // Show the invoice section
     invoiceSection.style.display = 'block';
-
-    // Update invoice content
-    const currentDate = new Date().toLocaleDateString('en-IN');
-    invoiceCustomer.textContent = `Customer: ${selectedCustomer} - Date: ${currentDate}`;
-    invoiceTable.innerHTML = '';
-    invoiceTotalAmount.textContent = '';
-
-    let totalAmount = 0;
-
-    selectedProducts.forEach(product => {
-        const totalPrice = product.price * product.quantity;
-        totalAmount += totalPrice;
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.price}</td>
-            <td>${product.quantity}</td>
-            <td>${totalPrice}</td>
-        `;
-        invoiceTable.appendChild(row);
-    });
-
-    invoiceTotalAmount.textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount}/-`;
 
     // Print the invoice
     window.print();
