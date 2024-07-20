@@ -197,6 +197,7 @@ function generateInvoiceHTML() {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Invoice</title>
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -232,6 +233,9 @@ function generateInvoiceHTML() {
                     font-weight: bold;
                     text-align: right;
                 }
+                i {
+                font-size: 2rem;
+                }    
                 @media print {
                     body {
                         print-color-adjust: exact;
@@ -243,7 +247,8 @@ function generateInvoiceHTML() {
         <body>
             <div class="invoice-container">
                 <div class="invoice-header">
-                    <h1>Invoice</h1>
+                <i class="bi bi-bag-check-fill"></i>    
+                <h1>Shansooq</h1>
                 </div>
                 <div class="invoice-details">
                     <p><strong>Customer:</strong> ${selectedCustomer}</p>
