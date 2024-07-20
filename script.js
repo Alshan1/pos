@@ -13,7 +13,6 @@ function addProduct() {
         document.getElementById('productName').value = '';
         document.getElementById('productPrice').value = '';
 
-        // Show the order section if customers exist, otherwise show customer section
         if (customers.length > 0) {
             hideAllSections();
             document.getElementById('orderSection').style.display = 'block';
@@ -56,7 +55,6 @@ function addCustomer() {
         updateCustomerList();
         document.getElementById('customerName').value = '';
 
-        // Always show the order section after adding a customer
         hideAllSections();
         document.getElementById('orderSection').style.display = 'block';
     } else {
@@ -116,7 +114,7 @@ function updateQuantity(index, newQuantity) {
     newQuantity = parseInt(newQuantity, 10);
 
     if (isNaN(newQuantity) || newQuantity < 1) {
-        newQuantity = 1; // Set quantity to 1 if it's NaN or less than 1
+        newQuantity = 1;
     }
 
     selectedProducts[index].quantity = newQuantity;
@@ -138,7 +136,6 @@ function orderProduct(index) {
         selectedProducts.push({ ...product, quantity: 1 });
     }
 
-    // Show the order section if not already visible
     if (document.getElementById('orderSection').style.display === 'none') {
         hideAllSections();
         document.getElementById('orderSection').style.display = 'block';
@@ -158,40 +155,125 @@ function completePurchase() {
         return;
     }
 
-    const invoiceSection = document.getElementById('invoiceSection');
-    const invoiceCustomer = document.getElementById('invoiceCustomer');
-    const invoiceTableBody = document.getElementById('invoiceTable').querySelector('tbody');
-    const invoiceTotalAmount = document.getElementById('invoiceTotalAmount');
-    const currentDate = new Date().toLocaleDateString('en-IN'); // Get today's date
+    // Generate invoice HTML
+    const invoiceHTML = generateInvoiceHTML();
 
-    invoiceCustomer.textContent = `Customer: ${selectedCustomer} - Date: ${currentDate}`;
-    invoiceTableBody.innerHTML = '';
+    // Open a new window with the invoice
+    const invoiceWindow = window.open('', '_blank');
+    invoiceWindow.document.write(invoiceHTML);
+    invoiceWindow.document.close();
 
-    let totalAmount = 0;
+    // Reset the order
+    selectedProducts = [];
+    selectedCustomer = null;
+    updateSummaryTable();
+    document.getElementById('customerList').value = '';
 
-    selectedProducts.forEach(product => {
-        const totalPrice = product.price * product.quantity;
-        totalAmount += totalPrice;
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.price.toFixed(2)}</td>
-            <td>${product.quantity}</td>
-            <td>${totalPrice.toFixed(2)}</td>
-        `;
-        invoiceTableBody.appendChild(row);
-    });
-
-    invoiceTotalAmount.textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount.toFixed(2)}/-`;
-
-    // Show the invoice section
     hideAllSections();
-    invoiceSection.style.display = 'block';
+    document.getElementById('formSection').style.display = 'block';
 }
 
-function printInvoice() {
-    window.print();
+function generateInvoiceHTML() {
+    const currentDate = new Date().toLocaleDateString('en-IN');
+    let totalAmount = 0;
+
+    const productsHTML = selectedProducts.map(product => {
+        const totalPrice = product.price * product.quantity;
+        totalAmount += totalPrice;
+        return `
+            <tr>
+                <td>${product.name}</td>
+                <td>₹${product.price.toFixed(2)}</td>
+                <td>${product.quantity}</td>
+                <td>₹${totalPrice.toFixed(2)}</td>
+            </tr>
+        `;
+    }).join('');
+
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invoice</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                }
+                .invoice-container {
+                    width: 80%;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+                .invoice-header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .invoice-details {
+                    margin-bottom: 20px;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 20px;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                .total {
+                    font-weight: bold;
+                    text-align: right;
+                }
+                @media print {
+                    body {
+                        print-color-adjust: exact;
+                        -webkit-print-color-adjust: exact;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="invoice-container">
+                <div class="invoice-header">
+                    <h1>Invoice</h1>
+                </div>
+                <div class="invoice-details">
+                    <p><strong>Customer:</strong> ${selectedCustomer}</p>
+                    <p><strong>Date:</strong> ${currentDate}</p>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${productsHTML}
+                    </tbody>
+                </table>
+                <div class="total">
+                    <p>TOTAL AMOUNT OF PURCHASE: ₹${totalAmount.toFixed(2)}/-</p>
+                </div>
+            </div>
+            <script>
+                window.onload = function() {
+                    window.print();
+                }
+            </script>
+        </body>
+        </html>
+    `;
 }
 
 function showAddProductSection() {
@@ -208,5 +290,4 @@ function hideAllSections() {
     document.getElementById('formSection').style.display = 'none';
     document.getElementById('customerSection').style.display = 'none';
     document.getElementById('orderSection').style.display = 'none';
-    document.getElementById('invoiceSection').style.display = 'none';
 }
