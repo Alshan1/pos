@@ -21,7 +21,7 @@ body {
     text-align: center;
 }
 
-.form-section, .product-table-wrapper, .customer-section, .summary-section, .invoice-section {
+.form-section, .order-section, .summary-section, .invoice-section {
     margin-bottom: 20px;
 }
 
@@ -63,43 +63,6 @@ button {
 
 button:hover {
     background-color: #000000d6;
-}
-
-.dropbtn {
-    background-color: black;
-    color: white;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.dropdown-content select {
-    width: 100%;
-    padding: 12px 16px;
-    border: none;
-    background-color: #f1f1f1;
-    font-size: 16px;
-}
-
-.dropdown-content select:focus {
-    outline: none;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
 }
 
 .invoice-section {
@@ -168,3 +131,26 @@ i {
         font-size: 1.5rem;
     }
 }
+/* Add this to your existing CSS file */
+.back-button {
+    background-color: grey;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: #555;
+}
+
+#customerList{
+    background-color: black;
+    color: white;
+    outline: none;
+    width: 50%;
+    height: 30px;
+}
+

@@ -13,8 +13,16 @@ function addProduct() {
         document.getElementById('productName').value = '';
         document.getElementById('productPrice').value = '';
 
-        // Show the product table wrapper
-        document.getElementById('productTableWrapper').style.display = 'block';
+        // Show the order section if customers exist, otherwise show customer section
+        if (customers.length > 0) {
+            hideAllSections();
+            document.getElementById('orderSection').style.display = 'block';
+        } else {
+            hideAllSections();
+            document.getElementById('customerSection').style.display = 'block';
+        }
+    } else {
+        alert("Please enter both product name and price.");
     }
 }
 
@@ -34,24 +42,6 @@ function updateProductTable() {
         `;
         tableBody.appendChild(row);
     });
-
-    // Hide the product table wrapper if there are no products
-    if (products.length === 0) {
-        document.getElementById('productTableWrapper').style.display = 'none';
-    }
-}
-
-function orderProduct(index) {
-    const product = products[index];
-    const existingProduct = selectedProducts.find(p => p.name === product.name);
-
-    if (existingProduct) {
-        existingProduct.quantity += 1;
-    } else {
-        selectedProducts.push({ ...product, quantity: 1 });
-    }
-
-    updateSummaryTable();
 }
 
 function deleteProduct(index) {
@@ -66,8 +56,11 @@ function addCustomer() {
         updateCustomerList();
         document.getElementById('customerName').value = '';
 
-        // Show the customer section
-        document.getElementById('customerSection').style.display = 'block';
+        // Always show the order section after adding a customer
+        hideAllSections();
+        document.getElementById('orderSection').style.display = 'block';
+    } else {
+        alert("Please enter a customer name.");
     }
 }
 
@@ -83,24 +76,16 @@ function updateCustomerList() {
     });
 }
 
-function toggleCustomerDropdown() {
-    const dropdown = document.getElementById('customerDropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-}
-
 function selectCustomer() {
     const customerList = document.getElementById('customerList');
     const selectedIndex = customerList.value;
     if (selectedIndex) {
         selectedCustomer = customers[selectedIndex];
-    } else {
-        selectedCustomer = null;
-    }
-    
-    // Show the summary section when a customer is selected
-    if (selectedCustomer) {
         document.getElementById('summarySection').style.display = 'block';
         updateSummaryTable();
+    } else {
+        selectedCustomer = null;
+        document.getElementById('summarySection').style.display = 'none';
     }
 }
 
@@ -135,6 +120,25 @@ function updateQuantity(index, newQuantity) {
     }
 
     selectedProducts[index].quantity = newQuantity;
+    updateSummaryTable();
+}
+
+function orderProduct(index) {
+    const product = products[index];
+    const existingProduct = selectedProducts.find(p => p.name === product.name);
+
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        selectedProducts.push({ ...product, quantity: 1 });
+    }
+
+    // Show the order section if not already visible
+    if (document.getElementById('orderSection').style.display === 'none') {
+        hideAllSections();
+        document.getElementById('orderSection').style.display = 'block';
+    }
+
     updateSummaryTable();
 }
 
@@ -176,18 +180,28 @@ function completePurchase() {
 
     invoiceTotalAmount.textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount}/-`;
 
+    // Show the invoice section
+    hideAllSections();
     invoiceSection.style.display = 'block';
 }
 
 function printInvoice() {
-    const invoiceSection = document.getElementById('invoiceSection');
-
-    // Show the invoice section
-    invoiceSection.style.display = 'block';
-
-    // Print the invoice
     window.print();
+}
 
-    // Hide the invoice section after printing (optional)
-    invoiceSection.style.display = 'none';
+function showAddProductSection() {
+    hideAllSections();
+    document.getElementById('formSection').style.display = 'block';
+}
+
+function showAddCustomerSection() {
+    hideAllSections();
+    document.getElementById('customerSection').style.display = 'block';
+}
+
+function hideAllSections() {
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('customerSection').style.display = 'none';
+    document.getElementById('orderSection').style.display = 'none';
+    document.getElementById('invoiceSection').style.display = 'none';
 }
