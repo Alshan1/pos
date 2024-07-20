@@ -5,9 +5,9 @@ let selectedCustomer = null;
 
 function addProduct() {
     const name = document.getElementById('productName').value;
-    const price = document.getElementById('productPrice').value;
+    const price = parseFloat(document.getElementById('productPrice').value);
 
-    if (name && price) {
+    if (name && !isNaN(price)) {
         products.push({ name, price });
         updateProductTable();
         document.getElementById('productName').value = '';
@@ -22,7 +22,7 @@ function addProduct() {
             document.getElementById('customerSection').style.display = 'block';
         }
     } else {
-        alert("Please enter both product name and price.");
+        alert("Please enter both product name and a valid price.");
     }
 }
 
@@ -34,7 +34,7 @@ function updateProductTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${product.name}</td>
-            <td>${product.price}</td>
+            <td>${product.price.toFixed(2)}</td>
             <td>
                 <button onclick="orderProduct(${index})">Order</button>
                 <button onclick="deleteProduct(${index})">Delete</button>
@@ -102,14 +102,14 @@ function updateSummaryTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${product.name}</td>
-            <td>${product.price}</td>
+            <td>${product.price.toFixed(2)}</td>
             <td><input type="number" value="${product.quantity}" min="1" onchange="updateQuantity(${index}, this.value)" class="quantity-input"></td>
-            <td>${totalPrice}</td>
+            <td>${totalPrice.toFixed(2)}</td>
         `;
         tableBody.appendChild(row);
     });
 
-    document.getElementById('totalAmount').textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount}/-`;
+    document.getElementById('totalAmount').textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount.toFixed(2)}/-`;
 }
 
 function updateQuantity(index, newQuantity) {
@@ -124,6 +124,11 @@ function updateQuantity(index, newQuantity) {
 }
 
 function orderProduct(index) {
+    if (!selectedCustomer) {
+        alert("Please select a customer before adding products to the order.");
+        return;
+    }
+
     const product = products[index];
     const existingProduct = selectedProducts.find(p => p.name === product.name);
 
@@ -171,14 +176,14 @@ function completePurchase() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${product.name}</td>
-            <td>${product.price}</td>
+            <td>${product.price.toFixed(2)}</td>
             <td>${product.quantity}</td>
-            <td>${totalPrice}</td>
+            <td>${totalPrice.toFixed(2)}</td>
         `;
         invoiceTableBody.appendChild(row);
     });
 
-    invoiceTotalAmount.textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount}/-`;
+    invoiceTotalAmount.textContent = `TOTAL AMOUNT OF PURCHASE : ₹${totalAmount.toFixed(2)}/-`;
 
     // Show the invoice section
     hideAllSections();

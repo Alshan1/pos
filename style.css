@@ -19,6 +19,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    position: relative; /* Added for positioning buttons */
 }
 
 .form-section, .order-section, .summary-section, .invoice-section {
@@ -131,26 +132,31 @@ i {
         font-size: 1.5rem;
     }
 }
-/* Add this to your existing CSS file */
-.back-button {
-    background-color: grey;
-    color: white;
+
+/* Additional styles for positioning buttons on the left side */
+.button-container-left {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.9);
     padding: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.back-button:hover {
-    background-color: #555;
+.button-container-left button {
+    width: auto;
+    margin: 0;
 }
 
-#customerList{
+#customerList {
     background-color: black;
     color: white;
     outline: none;
     width: 50%;
     height: 30px;
 }
-
